@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/index.css" type="text/css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>Current Weather</h1>
+        <form>
+            <Label>Location</Label>
+            <br>
+            <input type="search" id="searchInput">
+            <button type="submit" id="submitButton">Search</button>
+        </form>
+        <p id="errorMessage"></p>
+        <div id="weatherContent">
+            <h2>Temperature:</h2>
+            <p><span id="temperatureContainer"></span><span>&#176;</span>C</p>
+            <h2>What to expect:</h1>
+                <p id="weatherSummaryContainer"></p>
+        </div>
+        <div id="imageContent">
+            <img src="#" id="weatherImage" />
+            <p>Pixabay: <a id="imageCredit" href="#"></a></p>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>

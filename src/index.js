@@ -20,19 +20,6 @@ temperatureUnitToggleButton.addEventListener(
   toggleTemperatureUnitDisplay
 );
 
-// updates display and toggle button text between fahrenheit and celcius units
-function toggleTemperatureUnitDisplay() {
-  if (fahrenheitSection.style.display === "none") {
-    temperatureUnitToggleButton.innerHTML = "Switch to Celcius";
-    fahrenheitSection.style.display = "block";
-    celciusSection.style.display = "none";
-  } else {
-    temperatureUnitToggleButton.innerHTML = "Switch to Fahrenheit";
-    fahrenheitSection.style.display = "none";
-    celciusSection.style.display = "block";
-  }
-}
-
 // gets data from Open Weather API
 async function weatherSearch() {
   const weatherContent = document.getElementById("weatherContent");
@@ -43,22 +30,23 @@ async function weatherSearch() {
       { mode: "cors" }
     );
     const weatherData = await response.json();
+    // will be a general weather type such as Rain, Snow, etc
     const weatherSummary = weatherData.weather[0].main;
     const celciusTemperature = weatherData.main.temp;
 
     displayWeatherData(weatherSummary, celciusTemperature);
+    // gets image from Pixabay API based on type of weather at user input location
     imageSearch(weatherSummary);
   } catch (error) {
     displayErrorMessage();
-    // search for a default image
+    // hide any existing weather content
+    hideWeatherContent();
+    // gets default image from Pixabay API
     imageSearch("earth");
   }
 
   function displayErrorMessage() {
     const errorMessage = document.getElementById("errorMessage");
-    // hide existing weather data that may be displayed
-    weatherContent.style.display = "none";
-    // display error message
     errorMessage.style.display = "block";
   }
 
@@ -69,28 +57,47 @@ async function weatherSearch() {
     const celciusContainer = document.getElementById("celciusContainer");
     const fahrenheitContainer = document.getElementById("fahrenheitContainer");
 
-    // set celcius temperature
-    celciusContainer.innerHTML = celciusTemperature;
-    // display celcius temperature by default
-    celciusSection.style.display = "block";
-    // set default text of temperature unit toggle button
-    temperatureUnitToggleButton.innerHTML = "Switch to Fahrenheit";
-    // set fahrenheit temperature
-    fahrenheitContainer.innerHTML = celciusToFahrenheit(celciusTemperature);
-    // hide fahrenehit display by default
-    fahrenheitSection.style.display = "none";
+    setCelciusTemperatureDisplay();
+    setFahrenheitTemperatureDisplay();
+    // display celcius and hide fahrenheit default
+    updateDisplayToCelcius();
+
     // set the main weather condition: Rain, Clear, Overcast, etc
-    weatherSummaryContainer.innerHTML = weatherSummary;
+    setMainWeatherConditionDisplay();
     // display all weather data
-    weatherContent.style.display = "block";
+    displayWeatherContent();
     // hide any existing error messages
-    errorMessage.style.display = "none";
+    hideErrorMessages();
+
+    function hideErrorMessages() {
+      errorMessage.style.display = "none";
+    }
+
+    function displayWeatherContent() {
+      weatherContent.style.display = "block";
+    }
+
+    function setMainWeatherConditionDisplay() {
+      weatherSummaryContainer.innerHTML = weatherSummary;
+    }
+
+    function setFahrenheitTemperatureDisplay() {
+      fahrenheitContainer.innerHTML = celciusToFahrenheit(celciusTemperature);
+    }
+
+    function setCelciusTemperatureDisplay() {
+      celciusContainer.innerHTML = celciusTemperature;
+    }
 
     // converts celcius to fahrenheit
     function celciusToFahrenheit(celciusTemperature) {
       const fahrenheitTemperature = celciusTemperature * (9 / 5) + 32;
       return Math.round(fahrenheitTemperature * 10) / 10;
     }
+  }
+
+  function hideWeatherContent() {
+    weatherContent.style.display = "none";
   }
 }
 
@@ -102,22 +109,57 @@ async function imageSearch(searchText) {
       { mode: "cors" }
     );
     const imageData = await response.json();
-    displayImageData(imageData);
+    setImageContent(imageData);
+    displayImageContent();
   } catch (error) {
     // hide the image content section
+    hideImageContent();
+  }
+
+  function hideImageContent() {
     imageContent.style.display = "block";
   }
 
-  function displayImageData(imageData) {
-    const imageContent = document.getElementById("imageContent");
+  function setImageContent(imageData) {
     const weatherImage = document.getElementById("weatherImage");
     const imageCredit = document.getElementById("imageCredit");
-    // set weather image
-    weatherImage.src = imageData.hits[0].webformatURL;
-    // set credit/source for image
-    imageCredit.innerHTML = imageData.hits[0].user;
-    imageCredit.href = imageData.hits[0].pageURL;
-    // display image content
+
+    setWeatherImage();
+    setCreditForImage();
+
+    function setCreditForImage() {
+      imageCredit.innerHTML = imageData.hits[0].user;
+      imageCredit.href = imageData.hits[0].pageURL;
+    }
+
+    function setWeatherImage() {
+      weatherImage.src = imageData.hits[0].webformatURL;
+    }
+  }
+
+  function displayImageContent() {
+    const imageContent = document.getElementById("imageContent");
     imageContent.style.display = "block";
   }
+}
+
+// updates display and toggle button text between fahrenheit and celcius units
+function toggleTemperatureUnitDisplay() {
+  if (fahrenheitSection.style.display === "none") {
+    updateDisplayToFahrenheit();
+  } else {
+    updateDisplayToCelcius();
+  }
+
+  function updateDisplayToFahrenheit() {
+    temperatureUnitToggleButton.innerHTML = "Switch to Celcius";
+    fahrenheitSection.style.display = "block";
+    celciusSection.style.display = "none";
+  }
+}
+
+function updateDisplayToCelcius() {
+  temperatureUnitToggleButton.innerHTML = "Switch to Fahrenheit";
+  fahrenheitSection.style.display = "none";
+  celciusSection.style.display = "block";
 }

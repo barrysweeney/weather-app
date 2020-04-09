@@ -12,6 +12,7 @@
 
 #container {
   padding: 1em;
+  text-align: center;
 }
 
 :root {
@@ -43,4 +44,8 @@ p {
 
 form {
   font-size: 2em;
+}
+
+#temperatureUnitToggleButton{
+  font-size: 1em;
 }

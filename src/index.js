@@ -1,8 +1,5 @@
 import "./index.css";
 
-const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
-const OPEN_WEATHER_API_KEY = process.env.OPEN_WEATHER_API_KEY;
-
 const submitButton = document.getElementById("submitButton");
 
 submitButton.addEventListener("click", (ev) => {
@@ -17,7 +14,7 @@ async function weatherSearch() {
   let location = document.getElementById("searchInput").value;
   try {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${OPEN_WEATHER_API_KEY}&units=metric`,
+      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.OPEN_WEATHER_API_KEY}&units=metric`,
       { mode: "cors" }
     );
     const weatherData = await response.json();
@@ -54,7 +51,7 @@ async function weatherSearch() {
 async function imageSearch(searchText) {
   try {
     const response = await fetch(
-      `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${searchText}&image_type=photo`,
+      `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=${searchText}&image_type=photo`,
       { mode: "cors" }
     );
     const imageData = await response.json();
@@ -73,3 +70,4 @@ async function imageSearch(searchText) {
     imageContent.style.display = "block";
   }
 }
+

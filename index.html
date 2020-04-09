@@ -16,12 +16,15 @@
             <Label>Location</Label>
             <br>
             <input type="search" id="searchInput">
+            <br>
             <button type="submit" id="submitButton">Search</button>
         </form>
-        <p id="errorMessage"></p>
+        <p id="errorMessage">Location not found</p>
         <div id="weatherContent">
             <h2>Temperature:</h2>
-            <p><span id="temperatureContainer"></span><span>&#176;</span>C</p>
+            <p id="celciusSection"><span id="celciusContainer"></span><span>&#176;</span>C</p>
+            <p id="fahrenheitSection"><span id="fahrenheitContainer"></span><span>&#176;</span>F</p>
+            <button id="temperatureUnitToggleButton">Switch to fahrenheit</button>
             <h2>What to expect:</h1>
                 <p id="weatherSummaryContainer"></p>
         </div>
